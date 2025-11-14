@@ -274,7 +274,7 @@ func showNotification(title, message, urgency, url string) {
 
 	// Add click action if URL is provided
 	if url != "" {
-		args = append(args, "-A", fmt.Sprintf("default=Open in Notion"))
+		args = append(args, "-A", "default=Open in Notion")
 	}
 
 	args = append(args, title, message)
