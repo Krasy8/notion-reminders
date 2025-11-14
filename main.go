@@ -63,7 +63,7 @@ func main() {
 
 	if len(reminders) == 0 {
 		log.Println("No pending reminders found!")
-		showNotification("Notion Reminders", "All caught up! No pending reminders. 🎉", "normal", "")
+		showNotificationSimple("All caught up! No pending reminders. 🎉")
 		return
 	}
 
@@ -291,5 +291,21 @@ func showNotification(title, message, urgency, url string) {
 	// you'd need to use a notification daemon that supports actions (like dunst)
 	if url != "" {
 		log.Printf("Click notification to open: %s\n", url)
+	}
+}
+
+// showNotificationSimple displays a simple auto-dismissing notification
+func showNotificationSimple(message string) {
+	cmd := exec.Command("notify-send",
+		"-u", "low",
+		"-i", "dialog-information",
+		"-a", "Notion Reminders - Complete",
+		"Notion Reminders",
+		message,
+	)
+
+	if err := cmd.Run(); err != nil {
+		log.Printf("Warning: Failed to show notification: %v", err)
+		log.Printf("Make sure libnotify is installed: sudo pacman -S libnotify")
 	}
 }

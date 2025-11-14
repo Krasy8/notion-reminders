@@ -21,6 +21,10 @@ echo "" >> ~/.config/omarchy/current/theme/mako.ini
 echo "[app-name=\"Notion Reminders\"]" >> ~/.config/omarchy/current/theme/mako.ini
 echo "default-timeout=0" >> ~/.config/omarchy/current/theme/mako.ini
 echo "on-button-left=exec sh -c 'omarchy-launch-webapp https://www.notion.so/2a9d40cb309b80c1a7adc2896f8d0713; makoctl dismiss'" >> ~/.config/omarchy/current/theme/mako.ini
+echo "" >> ~/.config/omarchy/current/theme/mako.ini
+echo "[app-name=\"Notion Reminders - Complete\"]" >> ~/.config/omarchy/current/theme/mako.ini
+echo "default-timeout=5000" >> ~/.config/omarchy/current/theme/mako.ini
+echo "on-button-left=exec makoctl dismiss" >> ~/.config/omarchy/current/theme/mako.ini
 
 echo "✓ Configuration restored!"
 echo "Reloading mako..."
