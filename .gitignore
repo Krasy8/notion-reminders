@@ -1,0 +1,17 @@
+# Binary
+notion-reminder
+
+# Config files with secrets
+config.conf
+*.conf
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
