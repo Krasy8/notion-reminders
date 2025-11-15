@@ -18,6 +18,18 @@
 - Fast and efficient (written in pure Go)
 - Integrates with systemd for automatic startup
 
+## Screenshots
+
+### Desktop Notification
+<p align="center">
+  <img src="assets/screenshot-2025-11-15_16-52-37.png" alt="Desktop notification showing pending reminders" width="600"/>
+</p>
+
+### Notion Database After Click
+<p align="center">
+  <img src="assets/screenshot-2025-11-15_16-53-25.png" alt="Notion database opened after clicking notification" width="800"/>
+</p>
+
 ## How It Works
 
 1. You add reminders to a Notion database from any device (phone, tablet, computer)
