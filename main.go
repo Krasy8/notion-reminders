@@ -55,10 +55,27 @@ func main() {
 
 	log.Println("Checking Notion for pending reminders...")
 
-	// Fetch reminders from Notion
-	reminders, err := getPendingReminders(config)
+	// Fetch reminders from Notion with retries
+	var reminders []Reminder
+	maxRetries := 5
+
+	for attempt := 0; attempt <= maxRetries; attempt++ {
+		reminders, err = getPendingReminders(config)
+		if err == nil {
+			break
+		}
+
+		if attempt < maxRetries {
+			// Exponential backoff: 2s, 4s, 8s, 16s, 32s
+			waitTime := time.Duration(1<<uint(attempt+1)) * time.Second
+			log.Printf("Failed to fetch reminders (attempt %d/%d): %v", attempt+1, maxRetries+1, err)
+			log.Printf("Retrying in %v...", waitTime)
+			time.Sleep(waitTime)
+		}
+	}
+
 	if err != nil {
-		log.Fatalf("Error fetching reminders: %v", err)
+		log.Fatalf("Error fetching reminders after %d attempts: %v", maxRetries+1, err)
 	}
 
 	if len(reminders) == 0 {
@@ -263,7 +280,7 @@ func formatReminder(page NotionPage) *Reminder {
 	return reminder
 }
 
-// showNotification displays a desktop notification using notify-send
+// showNotification displays a desktop notification using notify-send with retry logic
 func showNotification(title, message, urgency, url string) {
 	args := []string{
 		"-u", urgency,
@@ -279,33 +296,75 @@ func showNotification(title, message, urgency, url string) {
 
 	args = append(args, title, message)
 
-	cmd := exec.Command("notify-send", args...)
+	// Retry logic for notification - D-Bus/notification daemon may not be ready at boot
+	maxRetries := 5
+	var err error
 
-	if err := cmd.Run(); err != nil {
-		log.Printf("Warning: Failed to show notification: %v", err)
-		log.Printf("Make sure libnotify is installed: sudo pacman -S libnotify")
+	for attempt := 0; attempt <= maxRetries; attempt++ {
+		cmd := exec.Command("notify-send", args...)
+		err = cmd.Run()
+
+		if err == nil {
+			// Success!
+			if url != "" {
+				log.Printf("Click notification to open: %s\n", url)
+			}
+			return
+		}
+
+		if attempt < maxRetries {
+			// Exponential backoff: 1s, 2s, 4s, 8s, 16s
+			waitTime := time.Duration(1<<uint(attempt)) * time.Second
+			log.Printf("Failed to show notification (attempt %d/%d): %v", attempt+1, maxRetries+1, err)
+			log.Printf("Retrying in %v... (notification daemon may not be ready yet)", waitTime)
+			time.Sleep(waitTime)
+		}
 	}
 
-	// If URL is provided and notification is clicked, open it
-	// Note: This is a simple implementation. For more advanced click handling,
-	// you'd need to use a notification daemon that supports actions (like dunst)
+	// All retries failed
+	log.Printf("Warning: Failed to show notification after %d attempts: %v", maxRetries+1, err)
+	log.Printf("Make sure libnotify is installed: sudo pacman -S libnotify")
+	log.Printf("And that the notification daemon is running")
+
 	if url != "" {
 		log.Printf("Click notification to open: %s\n", url)
 	}
 }
 
-// showNotificationSimple displays a simple auto-dismissing notification
+// showNotificationSimple displays a simple auto-dismissing notification with retry logic
 func showNotificationSimple(message string) {
-	cmd := exec.Command("notify-send",
+	args := []string{
 		"-u", "low",
 		"-i", "dialog-information",
 		"-a", "Notion Reminders - Complete",
 		"Notion Reminders",
 		message,
-	)
-
-	if err := cmd.Run(); err != nil {
-		log.Printf("Warning: Failed to show notification: %v", err)
-		log.Printf("Make sure libnotify is installed: sudo pacman -S libnotify")
 	}
+
+	// Retry logic for notification - D-Bus/notification daemon may not be ready at boot
+	maxRetries := 5
+	var err error
+
+	for attempt := 0; attempt <= maxRetries; attempt++ {
+		cmd := exec.Command("notify-send", args...)
+		err = cmd.Run()
+
+		if err == nil {
+			// Success!
+			return
+		}
+
+		if attempt < maxRetries {
+			// Exponential backoff: 1s, 2s, 4s, 8s, 16s
+			waitTime := time.Duration(1<<uint(attempt)) * time.Second
+			log.Printf("Failed to show notification (attempt %d/%d): %v", attempt+1, maxRetries+1, err)
+			log.Printf("Retrying in %v... (notification daemon may not be ready yet)", waitTime)
+			time.Sleep(waitTime)
+		}
+	}
+
+	// All retries failed
+	log.Printf("Warning: Failed to show notification after %d attempts: %v", maxRetries+1, err)
+	log.Printf("Make sure libnotify is installed: sudo pacman -S libnotify")
+	log.Printf("And that the notification daemon is running")
 }
