@@ -1,6 +1,12 @@
-# Notion Desktop Reminders
+<p align="center">
+  <img src="assets/notion-reminder-logo-simplified.svg" alt="Notion Desktop Reminders Logo" width="200"/>
+</p>
 
-A lightweight Go application that checks your Notion database for incomplete reminders and shows desktop notifications on Linux. Perfect for adding reminders from your phone and seeing them when you log into your desktop.
+<h1 align="center">Notion Desktop Reminders</h1>
+
+<p align="center">
+  A lightweight Go application that checks your Notion database for incomplete reminders and shows desktop notifications on Linux. Perfect for adding reminders from your phone and seeing them when you log into your desktop.
+</p>
 
 ## Features
 
