@@ -427,8 +427,6 @@ notion-reminders/
 ├── README.md                    # This file
 └── assets/
     ├── notion-reminder-logo-simplified.svg  # Custom notification logo
-    ├── demo.gif                             # Demo animation (for README)
-    ├── recording.mkv                        # Original demo video
     └── screenshot-*.png                     # Screenshots
 
 ~/.local/bin/
