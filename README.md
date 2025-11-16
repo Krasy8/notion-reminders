@@ -34,7 +34,7 @@
 
 ## Demo
 
-![Demo](https://github.com/Krasy8/notion-reminders/blob/main/assets/recording.mkv)
+[![Demo](https://github.com/Krasy8/notion-reminders/blob/main/assets/screenshot-2025-11-15_16-53-25.png)](https://github.com/Krasy8/notion-reminders/blob/main/assets/recording.mkv)
 
 ## How It Works
 
