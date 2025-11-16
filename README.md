@@ -35,9 +35,7 @@
 ## Demo
 
 <p align="center">
-  <video src="assets/recording.mkv" width="800" controls>
-    Your browser does not support the video tag.
-  </video>
+  <img src="assets/demo.gif" alt="Notion Reminders Demo - notification appears, right-click to open, dismiss with click" width="800"/>
 </p>
 
 *Watch the notification appear, right-click to open Notion, and dismiss with a simple click.*
@@ -437,7 +435,8 @@ notion-reminders/
 ├── README.md                    # This file
 └── assets/
     ├── notion-reminder-logo-simplified.svg  # Custom notification logo
-    ├── recording.mkv                        # Demo video
+    ├── demo.gif                             # Demo animation (for README)
+    ├── recording.mkv                        # Original demo video
     └── screenshot-*.png                     # Screenshots
 
 ~/.local/bin/
