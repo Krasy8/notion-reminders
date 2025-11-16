@@ -53,6 +53,17 @@ chmod +x "$BIN_DIR/notion-reminder"
 
 echo "✓ Binary installed to: $BIN_DIR/notion-reminder"
 
+# Install logo
+SHARE_DIR="$HOME/.local/share/notion-reminder"
+mkdir -p "$SHARE_DIR"
+
+if [ -f "assets/notion-reminder-logo-simplified.svg" ]; then
+    cp "assets/notion-reminder-logo-simplified.svg" "$SHARE_DIR/logo.svg"
+    echo "✓ Logo installed to: $SHARE_DIR/logo.svg"
+else
+    echo "⚠ Logo file not found (notifications will use default icon)"
+fi
+
 # Create config file if it doesn't exist
 CONFIG_FILE="$CONFIG_DIR/config.conf"
 if [ ! -f "$CONFIG_FILE" ]; then

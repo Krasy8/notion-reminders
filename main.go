@@ -96,9 +96,9 @@ func main() {
 	urgency := "normal"
 
 	if len(reminders) == 1 {
-		message = "You have 1 pending reminder.\n\nClick to open in Notion."
+		message = "You have 1 pending reminder.\n\nRight-click to open in Notion."
 	} else {
-		message = fmt.Sprintf("You have %d pending reminders.\n\nClick to open in Notion.", len(reminders))
+		message = fmt.Sprintf("You have %d pending reminders.\n\nRight-click to open in Notion.", len(reminders))
 		if len(reminders) > 3 {
 			urgency = "critical"
 		}
@@ -282,9 +282,19 @@ func formatReminder(page NotionPage) *Reminder {
 
 // showNotification displays a desktop notification using notify-send with retry logic
 func showNotification(title, message, urgency, url string) {
+	// Get home directory for icon path
+	homeDir, homeErr := os.UserHomeDir()
+	iconPath := "dialog-information" // fallback
+	if homeErr == nil {
+		customIcon := filepath.Join(homeDir, ".local", "share", "notion-reminder", "logo.svg")
+		if _, statErr := os.Stat(customIcon); statErr == nil {
+			iconPath = customIcon
+		}
+	}
+
 	args := []string{
 		"-u", urgency,
-		"-i", "dialog-information",
+		"-i", iconPath,
 		"-a", "Notion Reminders",
 		"-t", "0", // Stay on screen until dismissed
 	}
@@ -333,9 +343,19 @@ func showNotification(title, message, urgency, url string) {
 
 // showNotificationSimple displays a simple auto-dismissing notification with retry logic
 func showNotificationSimple(message string) {
+	// Get home directory for icon path
+	homeDir, homeErr := os.UserHomeDir()
+	iconPath := "dialog-information" // fallback
+	if homeErr == nil {
+		customIcon := filepath.Join(homeDir, ".local", "share", "notion-reminder", "logo.svg")
+		if _, statErr := os.Stat(customIcon); statErr == nil {
+			iconPath = customIcon
+		}
+	}
+
 	args := []string{
 		"-u", "low",
-		"-i", "dialog-information",
+		"-i", iconPath,
 		"-a", "Notion Reminders - Complete",
 		"Notion Reminders",
 		message,

@@ -22,7 +22,7 @@
 
 ### Desktop Notification
 <p align="center">
-  <img src="assets/screenshot-2025-11-15_16-52-37.png" alt="Desktop notification showing pending reminders" width="600"/>
+  <img src="assets/screenshot-2025-11-16_15-30-19.png" alt="Desktop notification showing pending reminders" width="600"/>
 </p>
 
 ### Notion Database After Click
