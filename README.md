@@ -32,10 +32,6 @@
   <img src="assets/screenshot-2025-11-15_16-53-25.png" alt="Notion database opened after clicking notification" width="800"/>
 </p>
 
-## Demo
-
-![Watch the video](https://github.com/Krasy8/notion-reminders/blob/main/assets/recording.mkv)
-
 ## How It Works
 
 1. You add reminders to a Notion database from any device (phone, tablet, computer)
