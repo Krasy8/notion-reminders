@@ -34,7 +34,7 @@
 
 ## Demo
 
-[![Demo]](https://github.com/Krasy8/notion-reminders/blob/main/assets/recording.mkv)
+![Watch the video](https://github.com/Krasy8/notion-reminders/blob/main/assets/recording.mkv)
 
 ## How It Works
 
