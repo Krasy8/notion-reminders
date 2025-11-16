@@ -34,13 +34,7 @@
 
 ## Demo
 
-<p align="center">
-  <img src="assets/demo.gif" alt="Notion Reminders Demo - notification appears, right-click to open, dismiss with click" width="800"/>
-</p>
-
-[![Watch the video]](https://github.com/Krasy8/notion-reminders/blob/main/assets/recording.mkv)
-
-*Watch the notification appear, right-click to open Notion, and dismiss with a simple click.*
+![Demo](https://github.com/Krasy8/notion-reminders/blob/main/assets/recording.mkv)
 
 ## How It Works
 
