@@ -11,7 +11,9 @@
 ## Features
 
 - Add reminders from any device using the Notion app (iPhone, Android, web)
-- Desktop notifications on Linux login with click-to-open functionality
+- Desktop notifications on Linux login with right-click-to-open functionality
+- Custom SVG logo displayed in notifications
+- Simple dismiss: left-click or click outside the notification
 - Automatic retry logic for reliable operation at boot time
 - "All caught up" notification when no reminders are pending
 - Single binary with no external dependencies (~9MB)
@@ -30,12 +32,22 @@
   <img src="assets/screenshot-2025-11-15_16-53-25.png" alt="Notion database opened after clicking notification" width="800"/>
 </p>
 
+## Demo
+
+<p align="center">
+  <video src="assets/recording.mkv" width="800" controls>
+    Your browser does not support the video tag.
+  </video>
+</p>
+
+*Watch the notification appear, right-click to open Notion, and dismiss with a simple click.*
+
 ## How It Works
 
 1. You add reminders to a Notion database from any device (phone, tablet, computer)
 2. When you log into your Linux desktop, a systemd service automatically runs
 3. The app queries your Notion database via API for unchecked reminders
-4. Desktop notifications appear with a summary - click to open in Notion
+4. Desktop notifications appear with a summary - right-click to open in Notion, left-click to dismiss
 5. Mark reminders as complete in Notion, and they won't appear again
 
 ## Prerequisites
@@ -114,6 +126,7 @@ This script will:
 - Install `libnotify` if needed (for `notify-send`)
 - Build the Go binary (~9MB)
 - Install it to `~/.local/bin/notion-reminder`
+- Install the custom SVG logo to `~/.local/share/notion-reminder/`
 - Create config directory at `~/.config/notion-reminder/`
 - Create a template config file
 - Create a systemd user service
@@ -205,7 +218,7 @@ Add the following to your mako configuration file (`~/.config/mako/config` or fo
 ```ini
 [app-name="Notion Reminders"]
 default-timeout=0
-on-button-left=exec sh -c 'omarchy-launch-webapp https://www.notion.so/YOUR_DATABASE_ID; makoctl dismiss'
+on-button-right=exec sh -c 'omarchy-launch-webapp https://www.notion.so/YOUR_DATABASE_ID & makoctl dismiss'
 
 [app-name="Notion Reminders - Complete"]
 default-timeout=5000
@@ -216,7 +229,8 @@ on-button-left=exec makoctl dismiss
 
 This configuration:
 - Makes reminder notifications stay on screen until dismissed (`default-timeout=0`)
-- Opens your Notion database when you click the notification
+- Opens your Notion database when you **right-click** the notification
+- Dismisses the notification when you **left-click** or click outside it
 - Auto-dismisses the "All caught up" notification after 5 seconds
 
 **For non-Omarchy users:** If you're using a different notification daemon (dunst, etc.), configure click actions to open `https://www.notion.so/YOUR_DATABASE_ID` in your browser.
@@ -262,7 +276,7 @@ Reminders appear automatically when you log in. You can also check manually:
 notion-reminder
 ```
 
-Click the notification to open your Notion database.
+Right-click the notification to open your Notion database, or left-click to dismiss it.
 
 ### Completing Reminders
 
@@ -389,10 +403,10 @@ Install libnotify: `sudo pacman -S libnotify`
 4. Ensure you're in a graphical session (not SSH or TTY)
 5. Check if notification daemon is running: `ps aux | grep mako` (or dunst)
 
-### Notifications appear but clicking doesn't work
-- Check mako configuration includes the click action
+### Notifications appear but right-clicking doesn't open Notion
+- Check mako configuration includes `on-button-right` action
 - For Omarchy: verify `omarchy-launch-webapp` is available
-- For others: configure your notification daemon's click action
+- For others: configure your notification daemon's right-click action
 - Reload notification daemon: `makoctl reload` or restart it
 
 ### Service fails at boot
@@ -420,10 +434,17 @@ notion-reminders/
 ├── go.mod                       # Go module file
 ├── setup-go.sh                  # Installation script
 ├── restore-mako-config.sh       # Mako config restore script (Omarchy)
-└── README.md                    # This file
+├── README.md                    # This file
+└── assets/
+    ├── notion-reminder-logo-simplified.svg  # Custom notification logo
+    ├── recording.mkv                        # Demo video
+    └── screenshot-*.png                     # Screenshots
 
 ~/.local/bin/
 └── notion-reminder              # Compiled binary
+
+~/.local/share/notion-reminder/
+└── logo.svg                     # Custom notification logo (installed)
 
 ~/.config/notion-reminder/
 └── config.conf                  # API credentials
